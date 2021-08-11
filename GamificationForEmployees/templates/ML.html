@@ -1,0 +1,178 @@
+{% extends "layout.html" %} {% load bootstrap3 %} {% block content %}
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-md-12">
+      <div class="card border-left-dark shadow h-100 py-2">
+        <div class="card-header text-white" style="text-align: center; font-size: 30px; font-weight: bolder; background-color: #00adee;">MONTHLY BONUS PREDICTOR</div>
+
+        <div class="card-body">
+  
+        <br>
+        <p class="text-center" style="font-size: 20px;">Select <b>Employee Name/ID</b> and <b>Month</b> To Predict Incentive.</p>
+        <br>  
+
+        
+
+        <form  method="POST" > 
+          {% csrf_token %}
+          <!-- SELECT -->
+          <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="">Employee Name and ID</span>
+            </div>
+            
+            <select name='emp_no' class="px-5" style="width: 350px;" id="e_no" required onchange="getData(this.value)">
+              <option disabled>Choose Employee Name</option>
+              {% for i in users  %}
+                <option value="{{i.emp_no}}" {% ifequal e_no i.emp_no %}
+                    selected
+                {% endifequal %}>{{i.emp_name}} - {{i.emp_no}}</option>
+              {% endfor %}
+            </select>
+          
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="month" name="month">Month</label>
+            <input class="form-control" type="number" name="month" id="month" value="{{month}}" onchange="getDataByMonth(this.value)" required>
+            
+          </div>
+          <div class="form-group">
+            <label for="grade" name="grade">Grade</label>
+             <input class="form-control" type="text" name="grade" id="grade" value="{{grade}}" required>
+             <br>
+            
+            <button class="btn btn-link d-block mb-4" data-toggle="collapse" data-target="#collapse-btn-1">Click here to view Grade's Description</button>
+
+            <div class="collapse mb-5" id="collapse-btn-1">
+              <div class="card">
+                <div class="card-body" style="color: black;">
+                  <p><b>1:</b> "Executives(E1)" <b>2:</b> "Executives(E2)" <b>3:</b> "Junior Executives 1" <b>4:</b> "Senior Mgt(CE)" <b>5:</b> "Senior Mgt(E3)" <b>6:</b> "Senior Mgt(M)"
+                    <br><b>7:</b> "Senior Mgt(M1)" <b>8:</b> "Senior Mgt(M2)" <b>9:</b> "Senior Mgt(M3)" <b>10:</b> "Supervisors(11)" <b>11:</b> "Supervisors(12)" <b>12:</b> "Supervisors(13)"
+                     <br><b>13:</b> "Management Trainees" <b>14:</b> "CTO/FTO" <b>15:</b> "Apprentices" <b>16:</b> "Workers(1)" <b>17:</b> "Workers(2)" <b>18:</b> "Workers(3)" <b>19:</b> "Workers(5)" <b>20:</b> "Workers(7)"</p>
+                </div>
+              </div>
+            </div>
+          
+          </div>
+          <div class="form-group">
+              <label for="score" name="score">Score</label>
+              <input class="form-control" type="number" step="0.001" name="score" id="score" placeholder="Enter Score" value="{{score}}" required>
+          </div>
+          <div class="form-group">
+              <label for="bonus_score" name="bonus_score">Bonus Score</label>
+              <input class="form-control" type="number" step="0.001" name="bonus_score" id="bonus_score" placeholder="Enter Bonus Score" value="{{bonus_score}}" required>
+          </div>
+          <button class="btn btn-primary btn-block-center" type="submit">Predict Bonus</button>
+        </form>
+        <br>
+        <div class="mx-auto" style="width:500px; font-size: 25px; text-align: center; font-weight: bolder; color:white; background-color: black; padding: 10px;">
+
+        RESULT: {{result}}
+        
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Prediction Results</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <h5>Prediction Input:</h5>
+              <div>Month: <span id="mon"></span></div>
+              <div>Grade: <span id="grd"></span></div>
+              <div>Score: <span id="scr"></span></div>
+              <div>Bonus Score: <span id="bos"></span></div>
+              <h5 class="pt-3">Prediction Classification:</h5>
+              <div id="prediction"></div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+<script>
+
+function getData(e_no){
+   $.ajax({
+        url: '/get_data_by_eno',
+        type: 'get',
+        data: {e_no:e_no},
+        success: function(data) {
+          $('#grade').val(data.grade);
+          $('#month').val(data.month);
+          $('#score').val(data.score);
+          $('#bonus_score').val(data.bonus_score);
+        },
+        failure: function(data) { 
+            alert('Got an error dude');
+        }
+      }); 
+}
+
+function getDataByMonth(month){
+  var e_no = $('#e_no').val()
+   $.ajax({
+        url: '/get_data_by_month',
+        type: 'get',
+        data: {e_no:e_no,month:month},
+        success: function(data) {
+          $('#grade').val(data.grade);
+          // $('#month').val(data.month);
+          $('#score').val(data.score);
+          $('#bonus_score').val(data.bonus_score);
+        },
+        failure: function(data) { 
+            alert('Got an error dude');
+        }
+      }); 
+}
+</script>
+{% comment %} <script>
+  $(document).on('submit', '#post-form',function(e){
+      e.preventDefault();
+      $.ajax({
+          type:'POST',
+          url:'{% url "predict:submit_prediction" %}',
+          data:{
+              month:$('#month').val(),
+              grade:$('#grade').val(),
+              score:$('#score').val(),
+              bonus_score:$('#bonus_score').val(),
+              csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+              action: 'post'
+          },
+          success:function(json) {
+              document.forms["post-form"].reset();
+              document.getElementById("prediction").innerHTML = json['result']
+              document.getElementById("mon").innerHTML = json['month']
+              document.getElementById("grd").innerHTML = json['grade']
+              document.getElementById("scr").innerHTML = json['score']
+              document.getElementById("bos").innerHTML = json['bonus_score']
+          },
+          error : function(xhr,errmsg,err) {
+
+          }
+      });
+  })
+</script> {% endcomment %}
+
+
+{% endblock %}
+
+

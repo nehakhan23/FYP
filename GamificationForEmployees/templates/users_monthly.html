@@ -1,0 +1,84 @@
+{% extends "layout.html" %} {% load bootstrap3 %} {% block content %}
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-md-12">
+      <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-header text-white" style="font-size: 30px; text-align: center; font-weight: bolder; background-color: #00adee;">EMPLOYEES MONTHLY DATA</div>
+
+        <div class="card-body">
+          {% if messages %}
+          <ul class="messages">
+            {% for msg in messages %}
+            <li>
+              <div class="alert alert-{{msg.level_tag}}" role="alert">
+                {{msg.message}}
+              </div>
+            </li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+          <div class="dt_colVis_buttons"></div>
+          <table
+            id="datatable"
+            class="table table-bordered"
+            cellspacing="0"
+            width="100%"
+            style="overflow: scroll"
+          >
+            <thead>
+              <tr style="text-align: center;">
+                <th>#</th>
+                <th>E_no</th>
+                <th>E_name</th>
+                <th>Grade</th>
+                <th>Department</th>
+                <th>Month</th>
+                <th>No roaster deviation</th>
+                <th>Roaster deviation</th>
+                <th>Training Session</th>
+                <th>Absent</th>
+                <th>Offday</th>
+                <th>Present</th>
+                <th>Overtime Hours</th>
+                <th>Safety risk rating</th>
+                <th>Leaves</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for f in table %}
+              <tr>
+                <td>{{f.id}}</td>
+
+                <td>{{f.e_no}}</td>
+                <td>{{f.e_name}}</td>
+                <td>{{f.grade}}</td>
+                <td>{{f.department}}</td>
+                <td>{{f.month}}</td>
+                <td>{{f.no_roaster_deviation}}</td>
+                <td>{{f.roaster_deviation}}</td>
+                <td>{{f.training_session}}</td>
+                <td>{{f.absent}}</td>
+                <td>{{f.offday}}</td>
+                <td>{{f.present}}</td>
+                <td>{{f.overtime_hours}}</td>
+                <td>{{f.safety_risk_rating}}</td>
+                <td>{{f.leaves}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function () {
+    $("#datatable").DataTable({
+      scrollX: true,
+    });
+  });
+</script>
+
+{% endblock %}

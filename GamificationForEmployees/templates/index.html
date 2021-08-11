@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+  <head>
+    <title>AI Fitness Trainer</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Muli:300,400,700,900"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'frontend/fonts/icomoon/style.css' %}"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{% static 'frontend/css/bootstrap.min.css' %}"
+    />
+    <link rel="stylesheet" href="{% static 'frontend/css/jquery-ui.css' %}" />
+    <link
+      rel="stylesheet"
+      href="{% static 'frontend/css/owl.carousel.min.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'frontend/css/owl.theme.default.min.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'frontend/css/owl.theme.default.min.css' %}"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{% static 'frontend/css/jquery.fancybox.min.css' %}"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{% static 'frontend/css/bootstrap-datepicker.css' %}"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{% static 'frontend/fonts/flaticon/font/flaticon.css' %}"
+    />
+
+    <link rel="stylesheet" href="{% static 'frontend/css/aos.css' %}" />
+    <link
+      href="{% static 'frontend/css/jquery.mb.YTPlayer.min.css' %}"
+      media="all"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <link rel="stylesheet" href="{% static 'frontend/css/style.css' %}" />
+    <script>
+      function calculatebmi() {
+        var weight = $(".weight").val();
+        var height = $(".height").val();
+
+        if (weight != "" && height != "") {
+          var bmi = weight / (height * height);
+          num = bmi.toString(); //If it's not already a String
+          bmi = num.slice(0, num.indexOf(".") + 3);
+          if (bmi < 18.5) {
+            var text = "Underweight";
+          } else if (bmi >= 18.5 && bmi <= 24.9) {
+            var text = "Normal";
+          } else if (bmi >= 25.0 && bmi <= 29.9) {
+            var text = "Overweight";
+          } else if (bmi >= 30) {
+            var text = "Obsese";
+          }
+          $("#bmiresult").html("Result: " + bmi + " - " + text);
+        } else {
+          $("#bmiresult").html("Please fill above fields");
+        }
+      }
+    </script>
+  </head>
+
+  <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+    <div class="site-wrap">
+      <div class="site-mobile-menu site-navbar-target">
+        <div class="site-mobile-menu-header">
+          <div class="site-mobile-menu-close mt-3">
+            <span class="icon-close2 js-menu-toggle"></span>
+          </div>
+        </div>
+        <div class="site-mobile-menu-body"></div>
+      </div>
+
+      <header
+        class="site-navbar py-4 js-sticky-header site-navbar-target"
+        role="banner"
+      >
+        <div class="container-fluid">
+          <div class="d-flex align-items-center">
+            <div class="site-logo">
+              <a href="index.html">AI FITNESS TRAINER<span>.</span> </a>
+            </div>
+            <div class="ml-auto">
+              <nav
+                class="site-navigation position-relative text-right"
+                role="navigation"
+              >
+                <ul
+                  class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block"
+                >
+                  <li><a href="#home-section" class="nav-link">Home</a></li>
+                  <li>
+                    <a
+                      href="#"
+                      class="nav-link"
+                      data-toggle="modal"
+                      data-target="#workoutplan"
+                      >Workout Plan</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      class="nav-link"
+                      data-toggle="modal"
+                      data-target="#myModal"
+                      >Diet Plan</a
+                    >
+                  </li>
+
+                  <li>
+                    <a
+                      href="{% if user.is_authenticated %}/home{% else %}/login{% endif %}"
+                      class="nav-link"
+                      >{% if user.is_authenticated %} Dashboard {% else %} Login
+                      {% endif %}</a
+                    >
+                  </li>
+                  <li><a href="/register" class="nav-link">Register</a></li>
+                </ul>
+              </nav>
+              <a
+                href="#"
+                class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle float-right"
+                ><span class="icon-menu h3"></span
+              ></a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <a
+        id="bgndVideo"
+        class="player"
+        data-property="{videoURL:'https://www.youtube.com/watch?v=w-cRWOjlk8c',showYTLogo:false, showAnnotations: false, showControls: false, cc_load_policy: false, containment:'#home-section',autoPlay:true, mute:true, startAt:255, stopAt: 271, opacity:1}"
+      >
+      </a>
+
+      <div class="intro-section" id="home-section">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-lg-12 mx-auto text-center" data-aos="fade-up">
+              <h1 class="mb-3">We Believe Little Things Matter</h1>
+              <p class="lead mx-auto desc mb-5">
+                Fitness is not a burden BUT it is a LIFESTYLE
+              </p>
+              <p class="text-center">
+                <a href="#menu" class="btn btn-outline-white py-3 px-5"
+                  >Get Started</a
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="schedule-wrap">
+        <div class="d-md-flex align-items-center">
+          <div class="hours mr-md-4 mb-4 mb-lg-0">
+            <strong class="d-block">Hours</strong>
+            Opening: 7:30am &mdash; Closing: 9:00pm
+          </div>
+          <div class="cta ml-auto">
+            <a
+              href="#contact-section"
+              class="smoothscroll d-flex d-md-flex align-items-center btn"
+            >
+              <span class="mx-auto">
+                <span>Contact us</span>
+                <span class="arrow icon-keyboard_arrow_right"></span
+              ></span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="site-section">
+        <div class="container">
+          <div class="row justify-content-center text-center mb-5">
+            <div class="col-md-8 section-heading">
+              <span class="subheading">Stay Healthy</span>
+              <h2 class="heading mb-3">Get A Perfect Body</h2>
+              <p>
+                Far far away, behind the word mountains, far from the countries
+                Vokalia and Consonantia, there live the blind texts. Separated
+                they live in Bookmarksgrove right at the coast of the Semantics,
+                a large language ocean.
+              </p>
+            </div>
+          </div>
+
+          <!-- Slider -->
+          <div class="owl-carousel nonloop-block-14 block-14" data-aos="fade">
+            <div class="slide">
+              <div class="ftco-feature-1">
+                <span class="icon flaticon-fit"></span>
+                <div class="ftco-feature-1-text">
+                  <h2>Be Fit</h2>
+                  <p>
+                    Far far away, behind the word mountains, far from the
+                    countries Vokalia and Consonantia, there live the blind
+                    texts.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="slide">
+              <div class="ftco-feature-1">
+                <span class="icon flaticon-gym-1"></span>
+                <div class="ftco-feature-1-text">
+                  <h2>Join Club</h2>
+                  <p>
+                    Far far away, behind the word mountains, far from the
+                    countries Vokalia and Consonantia, there live the blind
+                    texts.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="slide">
+              <div class="ftco-feature-1">
+                <span class="icon flaticon-gym"></span>
+                <div class="ftco-feature-1-text">
+                  <h2>Gym Fitness</h2>
+                  <p>
+                    Far far away, behind the word mountains, far from the
+                    countries Vokalia and Consonantia, there live the blind
+                    texts.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="slide">
+              <div class="ftco-feature-1">
+                <span class="icon flaticon-vegetables"></span>
+                <div class="ftco-feature-1-text">
+                  <h2>Eat Vegie</h2>
+                  <p>
+                    Far far away, behind the word mountains, far from the
+                    countries Vokalia and Consonantia, there live the blind
+                    texts.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="slide">
+              <div class="ftco-feature-1">
+                <span class="icon flaticon-fruit-juice"></span>
+                <div class="ftco-feature-1-text">
+                  <h2>Fruit Juices</h2>
+                  <p>
+                    Far far away, behind the word mountains, far from the
+                    countries Vokalia and Consonantia, there live the blind
+                    texts.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="slide">
+              <div class="ftco-feature-1">
+                <span class="icon flaticon-stationary-bike"></span>
+                <div class="ftco-feature-1-text">
+                  <h2>Body Warmup</h2>
+                  <p>
+                    Far far away, behind the word mountains, far from the
+                    countries Vokalia and Consonantia, there live the blind
+                    texts.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bgimg"
+        style="background-image: url({%static'frontend/images/bg_2.jpg'%})"
+        id="menu"
+        data-stellar-background-ratio="0.5"
+      >
+        <div class="container">
+          <div
+            class="row align-items-center justify-content-center text-center"
+          >
+            <div class="col-md-7">
+              <h2 class="">Get The Result You Want</h2>
+              <p class="lead mx-auto desc mb-5">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Aspernatur, laudantium quia blanditiis ipsum.
+                <a href="#" target="_blank">Get Started</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Diet Plan Form</h4>
+              <button type="button" class="close" data-dismiss="modal">
+                &times;
+              </button>
+            </div>
+            <div class="modal-body">
+              <form action="/dietplan" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="">Age</label>
+                  <input
+                    type="text"
+                    class="form-control age"
+                    name="age"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="">Weight in kgs</label>
+                  <input
+                    type="number"
+                    class="form-control weight"
+                    name="weight"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="">Height in meters</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    class="form-control height"
+                    name="height"
+                    required
+                  />
+                </div>
+                <button
+                  class="btn btn-primary"
+                  type="button"
+                  onclick="calculatebmi()"
+                >
+                  Calculate BMI
+                </button>
+                <br />
+                <span id="bmiresult"></span>
+                <br />
+                <div class="form-group">
+                  <label for="">Goal</label>
+                  <select name="goal" id="goal" required class="form-control">
+                    {% for foo in goal %}
+                    <option value="{{ foo.id }}">{{ foo.g_name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <input type="hidden" value="Diet_Plan" name="type" />
+                <div class="form-group">
+                  <label for="">Diet Preference</label>
+                  <select
+                    name="meal_type"
+                    id="preference"
+                    required
+                    class="form-control"
+                  >
+                    {% for m in meal_type %}
+                    <option value="{{ m.id }}">{{ m.mt_name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                {% if user.is_authenticated %}
+                <button
+                  type="submit"
+                  class="btn btn-success"
+                  style="float: right"
+                >
+                  Submit
+                </button>
+                {% else %}
+                <span class="alert-danger">Please login/register first</span>
+                {% endif %}
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-default"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="workoutplan" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Workout Plan Form</h4>
+              <button type="button" class="close" data-dismiss="modal">
+                &times;
+              </button>
+            </div>
+            <div class="modal-body">
+              <form action="/workoutplan" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="">Age</label>
+                  <input type="text" class="form-control age" name="age" />
+                </div>
+                <div class="form-group">
+                  <label for="">Weight in kgs</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    class="form-control weight"
+                    name="weight"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="">Height in inches and feet (5.4)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    class="form-control height"
+                    name="height"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="">Type</label>
+                  <select name="type" id="type" class="form-control">
+                    <option value="0">Home Workout</option>
+                    <option value="1">Gym Workout</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="">Goal</label>
+                  <select name="goal" id="goal" class="form-control">
+                    <option value="0,10">Fatloss</option>
+                    <option value="1,11">Muscle gain</option>
+                  </select>
+                </div>
+                {% if user.is_authenticated %}
+                <button
+                  type="submit"
+                  class="btn btn-success"
+                  style="float: right"
+                >
+                  Submit
+                </button>
+                {% else %}
+                <span class="alert-danger">Please login/register first</span>
+                {% endif %}
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-default"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="site-section" id="classes-section">
+        <div class="container">
+          <div class="row justify-content-center text-center mb-5">
+            <div class="col-md-8 section-heading">
+              <span class="subheading">Plans</span>
+              <h2 class="heading mb-3">Choose Plan</h2>
+              <p>
+                Choose a plan for your goal in following 2 plans. Supplement
+                guide will be available in both plans. For diet plan we will
+                first perform your BMI test.
+              </p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="class-item d-flex align-items-center">
+                <a
+                  href="#"
+                  class="class-item-thumbnail"
+                  data-toggle="modal"
+                  data-target="#workoutplan"
+                >
+                  <img
+                    src="{% static 'frontend/images/workout.jfif' %}"
+                    alt="Image"
+                  />
+                </a>
+                <p>Workout Plan</p>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="class-item d-flex align-items-center">
+                <a
+                  href="#"
+                  class="class-item-thumbnail"
+                  data-toggle="modal"
+                  data-target="#myModal"
+                >
+                  <img
+                    src="{% static 'frontend/images/diet.jfif' %}"
+                    alt="Image"
+                  />
+                </a>
+                <p>Diet Plan</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bgimg"
+        style="background-image: url({%static'frontend/images/bg_3.jpg'%})"
+        data-stellar-background-ratio="0.5"
+      >
+        <div class="container">
+          <div
+            class="row align-items-center justify-content-center text-center"
+          >
+            <div class="col-md-7">
+              <h2 class="">Every Step Counts</h2>
+              <p class="lead mx-auto desc mb-5">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Tempore ad, reprehenderit enim!
+                <a href="#" target="_blank">Get Started</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="site-section" id="trainer-section">
+        <div class="container">
+          <div
+            class="row justify-content-center text-center mb-5"
+            data-aos="fade-up"
+          >
+            <div class="col-md-8 section-heading">
+              <span class="subheading">Trainer</span>
+              <h2 class="heading mb-3">Our Trainers</h2>
+              <p>
+                Far far away, behind the word mountains, far from the countries
+                Vokalia and Consonantia, there live the blind texts. Separated
+                they live in Bookmarksgrove right at the coast of the Semantics,
+                a large language ocean.
+              </p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div
+              class="col-lg-3 mb-4 mb-lg-0 col-md-6 text-center"
+              data-aos="fade-up"
+              data-aos-delay=""
+            >
+              <div class="person">
+                <img
+                  src="{% static 'frontend/images/download.png' %}"
+                  alt="Image"
+                  class="img-fluid"
+                />
+                <h3>Machine Learning</h3>
+                <p class="position">Trainer</p>
+                <p>
+                  For workout plan, out trained machine learning will help to
+                  achieve your workout goal.
+                </p>
+              </div>
+            </div>
+            <div
+              class="col-lg-3 mb-4 mb-lg-0 col-md-6 text-center"
+              data-aos="fade-up"
+              data-aos-delay="100"
+            >
+              <div class="person">
+                <img
+                  src="{% static 'frontend/images/umer.jpg' %}"
+                  alt="Image"
+                  class="img-fluid"
+                />
+                <h3>Umer Saeed</h3>
+                <p class="position">Diet Consultant</p>
+                <p>
+                  Our diet consultant will help you in your diet goals and also
+                  supplement guidance.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="site-section" id="services-section">
+        <div class="container">
+          <div
+            class="row justify-content-center text-center mb-5"
+            data-aos="fade-up"
+          >
+            <div class="col-md-8 section-heading">
+              <span class="subheading">Fitness Services</span>
+              <h2 class="heading mb-3">Services</h2>
+              <p>
+                Far far away, behind the word mountains, far from the countries
+                Vokalia and Consonantia, there live the blind texts.
+              </p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div
+              class="col-lg-4 mb-4 col-md-6"
+              data-aos="fade-up"
+              data-aos-delay=""
+            >
+              <div class="ftco-feature-1">
+                <span class="icon flaticon-fit"></span>
+                <div class="ftco-feature-1-text">
+                  <h2>Be Fit</h2>
+                  <p>
+                    Far far away, behind the word mountains, far from the
+                    countries Vokalia and Consonantia, there live the blind
+                    texts.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="col-lg-4 mb-4 col-md-6"
+              data-aos="fade-up"
+              data-aos-delay="100"
+            >
+              <div class="ftco-feature-1">
+                <span class="icon flaticon-gym-1"></span>
+                <div class="ftco-feature-1-text">
+                  <h2>Join Club</h2>
+                  <p>
+                    Far far away, behind the word mountains, far from the
+                    countries Vokalia and Consonantia, there live the blind
+                    texts.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="col-lg-4 mb-4 col-md-6"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
+              <div class="ftco-feature-1">
+                <span class="icon flaticon-gym"></span>
+                <div class="ftco-feature-1-text">
+                  <h2>Gym Fitness</h2>
+                  <p>
+                    Far far away, behind the word mountains, far from the
+                    countries Vokalia and Consonantia, there live the blind
+                    texts.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="col-lg-4 mb-4 col-md-6"
+              data-aos="fade-up"
+              data-aos-delay=""
+            >
+              <div class="ftco-feature-1">
+                <span class="icon flaticon-vegetables"></span>
+                <div class="ftco-feature-1-text">
+                  <h2>Eat Vegie</h2>
+                  <p>
+                    Far far away, behind the word mountains, far from the
+                    countries Vokalia and Consonantia, there live the blind
+                    texts.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="col-lg-4 mb-4 col-md-6"
+              data-aos="fade-up"
+              data-aos-delay="100"
+            >
+              <div class="ftco-feature-1">
+                <span class="icon flaticon-fruit-juice"></span>
+                <div class="ftco-feature-1-text">
+                  <h2>Fruit Juices</h2>
+                  <p>
+                    Far far away, behind the word mountains, far from the
+                    countries Vokalia and Consonantia, there live the blind
+                    texts.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="col-lg-4 mb-4 col-md-6"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
+              <div class="ftco-feature-1">
+                <span class="icon flaticon-stationary-bike"></span>
+                <div class="ftco-feature-1-text">
+                  <h2>Body Warmup</h2>
+                  <p>
+                    Far far away, behind the word mountains, far from the
+                    countries Vokalia and Consonantia, there live the blind
+                    texts.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="site-section bg-light contact-wrap" id="contact-section">
+        <div class="container">
+          <div class="row justify-content-center text-center mb-5">
+            <div class="col-md-8 section-heading">
+              <span class="subheading">Get In Touch</span>
+              <h2 class="heading mb-3">Contact Us</h2>
+              <p>
+                Far far away, behind the word mountains, far from the countries
+                Vokalia and Consonantia, there live the blind texts.
+              </p>
+            </div>
+          </div>
+
+          <div class="row justify-content-center">
+            <div class="col-md-7">
+              <form method="post" data-aos="fade">
+                <div class="form-group row">
+                  <div class="col-md-6 mb-3 mb-lg-0">
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="First name"
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Last name"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-md-12">
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Subject"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-md-12">
+                    <input
+                      type="email"
+                      class="form-control"
+                      placeholder="Email"
+                    />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-12">
+                    <textarea
+                      class="form-control"
+                      id=""
+                      cols="30"
+                      rows="10"
+                      placeholder="Write your message here."
+                    ></textarea>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <input
+                      type="submit"
+                      class="btn btn-primary py-3 px-5 btn-block"
+                      value="Send Message"
+                    />
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="schedule-wrap2 clearfix">
+        <div class="d-md-flex align-items-center">
+          <div class="hours mr-md-4 mb-4 mb-lg-0">
+            <strong class="d-block">Hours</strong>
+            Opening: 7:30am &mdash; Closing: 9:00pm
+          </div>
+          <div class="cta ml-auto">
+            <a href="#" class="d-flex d-md-flex align-items-center btn">
+              <span class="mx-auto">
+                <span>Contact us</span>
+                <span class="arrow icon-keyboard_arrow_right"></span
+              ></span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer-section">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-4">
+              <h3 class="text-dark">About Stamina</h3>
+              <p>
+                Far far away, behind the word mountains, far from the countries
+                Vokalia and Consonantia, there live the blind texts.
+              </p>
+            </div>
+
+            <div class="col-md-3 ml-auto">
+              <h3 class="text-dark">Links</h3>
+              <ul class="list-unstyled footer-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Classes</a></li>
+                <li><a href="#">Schedule</a></li>
+                <li><a href="#">Trainer</a></li>
+              </ul>
+            </div>
+
+            <div class="col-md-4">
+              <h3 class="text-dark">Subscribe</h3>
+              <p>
+                Far far away, behind the word mountains, far from the countries
+                Vokalia and Consonantia, there live the blind texts.
+              </p>
+              <form action="#">
+                <div class="d-flex mb-5">
+                  <input
+                    type="text"
+                    class="form-control rounded-0"
+                    placeholder="Email"
+                  />
+                  <input
+                    type="submit"
+                    class="btn btn-primary rounded-0"
+                    value="Subscribe"
+                  />
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="row pt-5 mt-5 text-center">
+            <div class="col-md-12">
+              <div class="pt-5">
+                <p class="copyright">
+                  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                  Copyright &copy;
+                  <script>
+                    document.write(new Date().getFullYear());
+                  </script>
+                  All rights reserved | This template is made with
+                  <i class="icon-heart text-danger" aria-hidden="true"></i> by
+                  <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <!-- .site-wrap -->
+
+    <script src="{% static 'frontend/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'frontend/js/jquery-migrate-3.0.1.min.js' %}"></script>
+    <script src="{% static 'frontend/js/jquery-ui.js' %}"></script>
+    <script src="{% static 'frontend/js/popper.min.js' %}"></script>
+    <script src="{% static 'frontend/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'frontend/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'frontend/js/jquery.stellar.min.js' %}"></script>
+    <script src="{% static 'frontend/js/jquery.countdown.min.js' %}"></script>
+    <script src="{% static 'frontend/js/bootstrap-datepicker.min.js' %}"></script>
+    <script src="{% static 'frontend/js/jquery.easing.1.3.js' %}"></script>
+    <script src="{% static 'frontend/js/aos.js' %}"></script>
+    <script src="{% static 'frontend/js/jquery.fancybox.min.js' %}"></script>
+    <script src="{% static 'frontend/js/jquery.sticky.js' %}"></script>
+    <script src="{% static 'frontend/js/jquery.mb.YTPlayer.min.js' %}"></script>
+
+    <script src="{% static 'frontend/js/main.js' %}"></script>
+  </body>
+</html>

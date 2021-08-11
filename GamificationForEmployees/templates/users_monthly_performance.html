@@ -1,0 +1,200 @@
+{% extends "layout.html" %} {% load bootstrap3 %} {% block content %}
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-md-12">
+      <div class="card border-left-dark shadow h-100 py-2">
+        <div class="card-header text-white" style="text-align: center; font-size: 30px; font-weight: bolder; background-color: #00adee;">EMPLOYEES MONTHLY PERFORMANCE</div>
+
+        <div class="card-body">
+          {% if messages %}
+          <ul class="messages">
+            {% for msg in messages %}
+            <li>
+              <div class="alert alert-{{msg.level_tag}}" role="alert">
+                {{msg.message}}
+              </div>
+            </li>
+            {% endfor %}
+          </ul>
+          {% endif %} {{data}}
+          <form>
+            <div class="form-group">
+              <select class="form-control" id="month">
+                <option>Select Month</option>
+                {% for i in months %}
+                  <option value="{{i.number}}" {% ifequal i.number month %}
+                    selected
+                  {% endifequal %}>{{i.value}}</option>
+                {% endfor %} 
+              </select>
+            </div>
+          </form>
+
+          <div class="page-content page-container" id="page-content">
+            <div class="padding">
+              <div class="row">
+                <div class="container-fluid d-flex justify-content-center">
+                  <div class="col-sm-9 col-md-11">
+                    <div class="card">
+                      <div class="card-header" id="card-month" style="text-align: center; font-size: 20px; font-weight: bold;">Top 20 Employees of {% now "F" %}</div>
+                      <div class="card-body" style="height: 520px; width: 800px;">
+                        <div
+                          class="chartjs-size-monitor"
+                          style="
+                            position: absolute;
+                            left: 0px;
+                            top: 0px;
+                            right: 0px;
+                            bottom: 0px;
+                            overflow: hidden;
+                            pointer-events: none;
+                            visibility: hidden;
+                            z-index: -1;
+                          "
+                        >
+                          <div
+                            class="chartjs-size-monitor-expand"
+                            style="
+                              position: absolute;
+                              left: 0;
+                              top: 0;
+                              right: 0;
+                              bottom: 0;
+                              overflow: hidden;
+                              pointer-events: none;
+                              visibility: hidden;
+                              z-index: -1;
+                            "
+                          >
+                            <div
+                              style="
+                                position: absolute;
+                                width: 1000000px;
+                                height: 1000000px;
+                                left: 0;
+                                top: 0;
+                              "
+                            ></div>
+                          </div>
+                          <div
+                            class="chartjs-size-monitor-shrink"
+                            style="
+                              position: absolute;
+                              left: 0;
+                              top: 0;
+                              right: 0;
+                              bottom: 0;
+                              overflow: hidden;
+                              pointer-events: none;
+                              visibility: hidden;
+                              z-index: -1;
+                            "
+                          >
+                            <div
+                              style="
+                                position: absolute;
+                                width: 200%;
+                                height: 200%;
+                                left: 0;
+                                top: 0;
+                              "
+                            ></div>
+                          </div>
+                        </div>
+                        <canvas
+                          id="chart-line"
+                          width="600"
+                          height="400"
+                          class="chartjs-render-monitor"
+                          style="display: block; width: 299px; height: 200px"
+                        ></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js"></script>
+<script>
+function GetMonthName(monthNumber) {
+      var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      return months[monthNumber - 1];
+}
+  $(document).ready(function () {
+    var score
+    $('#month').change(()=>{
+      var month_num = $('#month').val();
+      $.ajax({
+        url: '/change_month',
+        type: 'get',
+        data: {month:month_num},
+        success: function(data) {
+          score = data.score
+          $('#card-month').html("Top 20 Employees of "+GetMonthName(month_num))  
+          var myLineChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+              labels: data.emp_no,
+              datasets: [
+                {
+                  data: score ,
+                  label: "Score",
+                  borderColor: "#00adee",
+                  backgroundColor: "#00adee",
+                  fill: false,
+                },
+              ],
+            },
+            options: {
+              title: {
+                display: true,
+                text: "Monthly Performance Employees Wise",
+                
+              },
+            },
+          });
+        },
+        failure: function(data) { 
+            alert('Got an error dude');
+        }
+      }); 
+    });
+    
+    var score = [{% for item in score %}
+         "{{ item }}",
+         {% endfor %}]
+    var ctx = $("#chart-line");
+    var myLineChart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: [{% for item in emp_no %}
+         "{{ item }}",
+         {% endfor %}],
+        datasets: [
+          {
+            data: score ,
+            label: "Score",
+            borderColor: "#00adee",
+            backgroundColor: "#00adee",
+            fill: false,
+          },
+        ],
+      },
+      options: {
+        title: {
+          display: true,
+          text: "Monthly Performance Employees Wise",
+        },
+      },
+    });
+  });
+</script>
+
+{% endblock %}

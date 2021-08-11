@@ -1,0 +1,8 @@
+{
+    "terminal.integrated.commandsToSkipShell": [
+        "\"terminal.integrated.shellArgs.windows\": [\"-ExecutionPolicy\", \"Bypass\"]"
+    ],
+    "prettier.enable": false,
+    "prettier.bracketSpacing": false,
+    "prettier.requireConfig": true
+}

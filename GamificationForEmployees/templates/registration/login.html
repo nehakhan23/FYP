@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- CSRF Token -->
+
+    {% load static %}
+    <title>Gamification - User Login</title>
+
+    <!-- Scripts -->
+    <script src="{% static '/login/app.js' %}" defer></script>
+    <link
+      href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+      rel="stylesheet"
+    />
+
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Nunito"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <!-- Styles -->
+    <link href="{% static '/login/app.css' %}" rel="stylesheet" />
+
+    <style>
+      #sortable-1 {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 25%;
+      }
+      #sortable-1 li {
+        margin: 0 3px 3px 3px;
+        padding: 0.4em;
+        padding-left: 1.5em;
+        font-size: 17px;
+        height: 16px;
+      }
+      .default {
+        background: #cedc98;
+        border: 1px solid #dddddd;
+        color: #333333;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      {% load bootstrap3 %}
+
+      <nav class="navbar navbar-expand-sm bg-white navbar-white">
+      <!-- <nav class="navbar fixed-top navbar-expand-sm navbar-light bg-light mb-3" id="main-nav"> -->
+        <div class="container">
+          <a class="navbar-brand" href="#">
+            <img src="{% static 'img/hellologo.png' %}" class="align-top" alt="Tripack Films Limited Logo" width="310" height="70" style="margin-left: 20%;" >
+          </a>
+        </div>
+      
+          <ul class="navbar-nav" style="padding: 20px; margin-right: 5%;">
+            <li class="nav-item">
+              <a class="nav-link text-dark" href="#login" style="font-size: 18px; font-weight: bold; padding-right: 30px;">LOGIN</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-dark" href="#values" style="font-size: 18px; font-weight: bold; padding-right: 30px;">VALUES</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-dark" href="#contact" style="font-size: 18px; font-weight: bold; padding-right: 30px;">CONTACT</a>
+            </li class="nav-item">
+            <li class="nav-item">
+              <a class="nav-link text-dark" href="#About" style="font-size: 18px; font-weight: bold;">ABOUT</a>
+            </li class="nav-item">
+          </ul>
+        </div>
+        
+      </nav>
+
+    <section id="login">
+      <div class="mx-auto" style="width: 100%; background-color: #00adee; padding-top: 2%; padding-bottom: 1.5%;">
+        <div class="jumbotron card mx-auto" style="max-width: 1270px; margin-top: 1%;">
+            <div class="row">
+              <div class="col-md-5">
+                <h1 class="mx-auto" style="text-align: center; padding-left: 8%; padding-top: 25%; font-weight: bold; font-size: 50px;">GAMIFICATION</h1>
+                <h1 style="text-align: center; padding-left: 8%; padding-top: 1%; font-weight: bold; font-size: 50px;">FOR </h1>
+                <h1 class="mx-auto" style="text-align: center; padding-left: 8%; padding-top: 1%; font-weight: bold; font-size: 50px;">EMPLOYEES</h1>
+              </div>
+
+        
+              <div class="card-body">
+                <div class="card-header" style="text-align: center; background: transparent; padding-top: 3%;">
+                    <h2>Login</h2>
+                </div>
+
+                <form method="POST" class="py-1 mx-auto" style="width: 55%; margin-top: 24px;">
+                  {% csrf_token %} {% bootstrap_form form %}
+                  <div class="form-group row mx-auto py-2">
+
+                    <div class="form-check mb-2 mr-sm-2">
+                      <input class="form-check-input" type="checkbox" id="inlineFormCheck">
+                      <label class="form-check-label" for="inlineFormCheck">
+                        Remember me
+                      </label>
+                    </div>
+
+                    <div class="col-md-8 offset-md-4 py-4">
+                      <button type="submit" class="btn btn-dark" style="width: 50%;">
+                        Sign In
+                      </button>
+                    </div>
+                  </div>
+                </form>
+
+            </div>
+        </div>
+        <br>   
+    </section>  
+
+      </div>
+    </div> 
+  <br> 
+   
+  <section id="values">
+    <!-- JUMBOTRON -->
+    <div class="jumbotron jumbotron-fluid text-center" style="border: 2px solid black;">
+      <h1 class="display-5">Our Core Values</h1>
+      <hr>
+      <br>
+
+      <button class="btn btn-dark btn-lg py-4" type="button" style="width: 20%; margin-right: 2%;">
+        <i class="fas fa-user"></i> HONESTY</button>
+      <button class="btn btn-dark btn-lg py-4" type="button" style="width: 20%; margin-right: 2%;">
+        <i class="fas fa-user"></i> LEAD</button>
+      <button class="btn btn-dark btn-lg py-4" type="button" style="width: 20%; margin-right: 2%;">
+        <i class="fas fa-user"></i> RESPECT</button>
+      <button class="btn btn-dark btn-lg py-4" type="button" style="width: 20%; margin-right: 2%;">
+        <i class="fas fa-user"></i> CARE</button>     
+      <button class="btn btn-dark btn-lg py-4" type="button" style="width: 20%; margin-top: 2%;">
+        <i class="fas fa-user"></i> COURAGE</button>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h1 class="display-5" style="text-align: center;">Contact Us</h1>
+        <hr>
+        <br>
+        <div class="media">
+          <img class="align-self-center" src="{% static 'img/house.png' %}" width="30" height="30" style="margin-left: 17%;">
+          <div class="media-body" style="margin-left: 3%; margin-top: 1%;">
+              <h5>House No. 18-B, Sir Abdullah Haroon Road, (Adjacent Marriott Hotel), Karachi, Pakistan</h5>
+          </div>
+        </div>
+        <br>
+
+        <div class="media">
+          <img class="align-self-center" src="{% static 'img/email.jpg' %}" width="30" height="30" style="margin-left: 17%;">
+          <div class="media-body" style="margin-left: 3%;margin-top: 1%;">
+              <h5>info@tripack.com.pk</h5>
+          </div>
+        </div>
+        <br>
+
+        <div class="media">
+          <img class="align-self-center" src="{% static 'img/phone.png' %}" width="30" height="30" style="margin-left: 17%;">
+          <div class="media-body" style="margin-left: 3%;margin-top: 1%;">
+              <h5>+92-21-35650572, +92-21-35650574</h5>
+          </div>
+        </div>
+        <br>
+
+        <div class="media">
+          <img class="align-self-center" src="{% static 'img/web.png' %}" width="30" height="30" style="margin-left: 17%;">
+          <div class="media-body" style="margin-left: 3%;margin-top: 1%;">
+              <h5>www.tripack.com.pk</h5>
+          </div>
+        </div>
+        <br>
+        
+        <div class="media">
+          <div class="media-header" style="margin-left: 17%;margin-top: 1%;">
+            <h5>SOCIAL LINKS</h5>
+          </div>
+          <div class="media-body" style="margin-left: 3%;">
+            
+              <a href="https://www.facebook.com/tripackians/" class="fa fa-facebook" style="background: #3B5998;
+              color: white; width: 50px; padding: 15px; font-size: 20px; text-decoration: none; text-align: center;"></a>
+              <a href="https://pk.linkedin.com/company/tri-pack-films-ltd." class="fa fa-linkedin" style="background: #007bb5;
+              color: white; width: 50px; padding: 15px; font-size: 20px; text-decoration: none; text-align: center; margin-left: 20px;"></a>
+          </div>
+        </div>
+  </section>
+
+  <section id="About">
+    <!-- JUMBOTRON -->
+    <div class="jumbotron jumbotron-fluid text-center">
+      <h1 class="display-5">About Tri-Pack Films Limited</h1>
+      <hr>
+      
+      <div class="card text-white" style="width: 1050px; margin-left: 153px; border: 1px solid #00adee;">
+        <img class="card-img" src="{% static 'img/new.jpg' %}">
+        <div class="card-img-overlay">
+            
+            <p class="card-text" style="color: black; text-align: justify;">Tri-Pack Films Limited (Tri-Pack) – a joint venture between Mitsubishi Corporation of Japan and Packages Limited of Pakistan was incorporated as a Public Limited Company on April 29, 1993 to produce Biaxially Orientated Polypropylene (BOPP) Films in Pakistan. Its head office is based in Karachi and regional offices are located in Karachi, Lahore and Hattar where focus is to provide customers with dependable, economical and quality films backed by strong customer services. Tri-Pack is indeed proud of making distinctive contributions to the packaging industry in Pakistan.
+              
+              Since inception the Company has been on a growth trajectory and has come a long way from one BOPP Line of 5,400
+              tons to four BOPP Lines of 66,800 tons and two CPP Lines of over 17,000 tons.
+              
+              At Tri-Pack, our passion to cater to the needs of our customers lies at the heart of every endeavour. We go a long mile to get results, operate responsibly, apply innovative technology, execute with excellence, and capture new opportunities to create a wonderful world today for generations to come.
+              
+              We aim to create long-term value for shareholders by catering to growing demands in a safe and responsible way. We not only strive to be a world-class operator, but also a responsible corporate citizen and an employer of choice.
+              
+              Our people and our products are the hallmark of our success that give us the strength to endeavour to be amongst the front runners in delivering to our customers, shareholders and community.</p>
+            
+        </div>
+      </div>  
+    </div>
+  </section>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+        crossorigin="anonymous"></script>
+      <script>
+        $('body').scrollspy({ target: '#main-nav' });
+    
+        // Add smooth scrolling
+        $('#main-nav a').on('click', function (e) {
+          // Check for a hash value
+          if (this.hash !== '') {
+            // Prevent default behavior
+            e.preventDefault();
+    
+            // Store hash
+            const hash = this.hash;
+    
+            // Animate smooth scroll
+            $('html, body').animate({
+              scrollTop: $(hash).offset().top
+            }, 900, function () {
+              // Add hash to URL after scroll
+              window.location.hash = hash;
+            });
+          }
+        });
+      </script>  
+
+  </body>
+</html>

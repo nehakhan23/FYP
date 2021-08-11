@@ -1,0 +1,218 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        
+        <div class="col-md-12">
+            <div class="card border-left-dark shadow h-100 py-2">
+                <!-- <div class="card-header text-white" style="text-align: center; font-size: 30px; font-weight: bolder; background-color: #00adee;">ADMIN DASHBOARD</div> -->
+
+                <div class="card-body">
+                     {% if request.session.status %}
+                        <div class="alert alert-success" role="alert">
+                            {{ request.session.status }}
+                        </div>
+                     {% endif %}
+
+                    {% if request.session.error %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ request.session.error }}
+                        </div>
+                    {% endif %}
+                    {% if user.is_superuser %}
+                    <div class="card-header text-white" style="text-align: center; font-size: 30px; font-weight: bolder; background-color: #00adee;">EMPLOYEES INFORMATION</div>
+                    
+                    <div class="card-body">
+                      {% if messages %}
+                      <ul class="messages">
+                        {% for msg in messages %}
+                        <li>
+                          <div class="alert alert-{{msg.level_tag}}" role="alert">
+                            {{msg.message}}
+                          </div>
+                        </li>
+                        {% endfor %}
+                      </ul>
+                      {% endif %}
+                      <div class="dt_colVis_buttons"></div>
+                      <table
+                        id="datatable3"
+                        class="table table-bordered"
+                        cellspacing="0"
+                        width="100%"
+                        style="overflow: scroll"
+                      >
+                        <thead>
+                          <tr style="text-align: center;">
+                            <th>#</th>
+                            <th>E_no</th>
+                            <th>E_name</th>
+                            <th>Grade</th>
+                            <th>Department</th>
+                            
+                          </tr>
+                        </thead>
+            
+                        <tbody>
+                          {% for f in table2 %}
+                          <tr>
+                            <td>{{f.id}}</td>
+            
+                            <td>{{f.e_no}}</td>
+                            <td>{{f.e_name}}</td>
+                            <td>{{f.grade}}</td>
+                            <td>{{f.department}}</td>
+                            
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <script>
+                      $(document).ready(function () {
+                        $("#datatable3").DataTable({
+                          scrollX: true,
+                        });
+                      });
+                    </script>
+                    
+
+                    
+                    
+                    {% else %}
+                    <div class="card-header text-white" style="text-align: center; font-size: 30px; font-weight: bolder; background-color: #00adee;">YOUR PERFORMANCE DATA</div>
+
+                    <br>
+                    <h2>Monthly Data</h2>
+                     <table
+            id="datatable1"
+            class="table table-bordered"
+            cellspacing="0"
+            width="100%"
+            style="overflow: scroll"
+          >
+            <thead>
+              <tr style="text-align: center;">
+                <th>#</th>
+                <th>E_no</th>
+                <th>E_name</th>
+                <th>Grade</th>
+                <th>Department</th>
+                <th>Month</th>
+                <th>No roaster deviation</th>
+                <th>Roaster deviation</th>
+                <th>Training Session</th>
+                <th>Absent</th>
+                <th>Offday</th>
+                <th>Present</th>
+                <th>Overtime Hours</th>
+                <th>Safety risk rating</th>
+                <th>Leaves</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for f in table1 %}
+              <tr>
+                <td>{{f.id}}</td>
+
+                <td>{{f.e_no}}</td>
+                <td>{{f.e_name}}</td>
+                <td>{{f.grade}}</td>
+                <td>{{f.department}}</td>
+                <td>{{f.month}}</td>
+                <td>{{f.no_roaster_deviation}}</td>
+                <td>{{f.roaster_deviation}}</td>
+                <td>{{f.training_session}}</td>
+                <td>{{f.absent}}</td>
+                <td>{{f.offday}}</td>
+                <td>{{f.present}}</td>
+                <td>{{f.overtime_hours}}</td>
+                <td>{{f.safety_risk_rating}}</td>
+                <td>{{f.leaves}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+            <br>
+            <br>
+            <h2>Yearly Data</h2>
+          <table
+            id="datatable2"
+            class="table table-bordered"
+            cellspacing="0"
+            width="100%"
+            style="overflow: scroll"
+          >
+            <thead>
+              <tr style="text-align: center;">
+                <th>#</th>
+                <th>E_no</th>
+                <th>E_name</th>
+                <th>Grade</th>
+                <th>Department</th>
+                
+                <th>No roaster deviation</th>
+                <th>Roaster deviation</th>
+                <th>Training Session</th>
+                <th>Absent</th>
+                <th>Offday</th>
+                <th>Present</th>
+                <th>Overtime Hours</th>
+                <th>Safety risk rating</th>
+                <th>Leaves</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for f in table2 %}
+              <tr>
+                <td>{{f.id}}</td>
+
+                <td>{{f.e_no}}</td>
+                <td>{{f.e_name}}</td>
+                <td>{{f.grade}}</td>
+                <td>{{f.department}}</td>
+                
+                <td>{{f.no_roaster_deviation}}</td>
+                <td>{{f.roaster_deviation}}</td>
+                <td>{{f.training_session}}</td>
+                <td>{{f.absent}}</td>
+                <td>{{f.offday}}</td>
+                <td>{{f.present}}</td>
+                <td>{{f.overtime_hours}}</td>
+                <td>{{f.safety_risk_rating}}</td>
+                <td>{{f.leaves}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% endif %}
+
+
+                
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $("#datatable1").DataTable({
+      scrollX: true,
+    });
+  });
+</script>
+<script>
+  $(document).ready(function () {
+    $("#datatable2").DataTable({
+      scrollX: true,
+    });
+  });
+</script>
+{% endblock %}
